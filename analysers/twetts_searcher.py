@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession, DataFrame
-from pyspark.sql.functions import col, split, array_intersect, size, lit, array
+from pyspark.sql.functions import col, split, array_intersect, size, array
 
 
 class TweetsSearch:
