@@ -4,7 +4,7 @@ from pyspark.sql.functions import explode_outer, col, avg
 
 class TweetsAnalyzer:
     # Class constants for column names
-    HASHTAG_COLUMN = "hashtag"
+    HASHTAG_COLUMN = "hashtags"
     IS_RETWEET_COLUMN = "is_retweet"
     SOURCE_COLUMN = "source"
     USER_FOLLOWERS = "user_followers"
