@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession, DataFrame
-from pyspark.sql.functions import col, split, array_intersect, size, array
+from pyspark.sql.functions import col, lower
 
 
 class TweetsSearch:
@@ -19,7 +19,7 @@ class TweetsSearch:
         Returns:
             DataFrame with filtered rows containing the keyword
         """
-        return df.filter(col(self.TEXT).contains(keyword))
+        return df.filter(lower(col(self.TEXT)).contains(keyword.lower()))
 
     def search_by_keywords(self, keywords: list, df: DataFrame) -> DataFrame:
         """
@@ -30,15 +30,8 @@ class TweetsSearch:
         Returns:
             DataFrame with filtered rows containing any of the keywords
         """
-        return (df.withColumn(
-            "keyWordsResult",
-            array_intersect(
-                split(col(self.TEXT), " "),
-                array(keywords)
-            )
-        )
-                .filter(~col("keyWordsResult").isNull() & (size(col("keyWordsResult")) > 0))
-                .drop("keyWordsResult"))
+        conditions = [lower(col(self.TEXT)).contains(keyword.lower()) for keyword in keywords]
+        return df.filter(conditions[0] | conditions[1])
 
     def only_in_location(self, location: str, df: DataFrame) -> DataFrame:
         """
